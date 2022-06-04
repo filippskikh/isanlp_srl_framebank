@@ -7,3 +7,9 @@
 /data/*
 __pycache__*
 .svn*
+workdir*
+*.log
+log.txt
+.idea
+*.egg-info
+venv

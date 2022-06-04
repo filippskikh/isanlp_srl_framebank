@@ -4,7 +4,8 @@ import os
 import pickle
 
 import numpy as np
-import tensorflow.lite as tfl
+import tensorflow as tf
+import tflite_runtime.interpreter
 from bert_serving.client import BertClient
 from deeppavlov.models.embedders.elmo_embedder import ELMoEmbedder
 from gensim.models import KeyedVectors
@@ -89,7 +90,7 @@ class ModelProcessorSrlFramebank:
         self._model_dir_path = model_dir_path
         # -----------------------Using TFLite------------------------
         logger.info('Loading the model...')
-        self._model = tfl.Interpreter(os.path.join(model_dir_path, 'neural_model.tflite'))
+        self._model = tflite_runtime.interpreter.Interpreter(os.path.join(model_dir_path, 'neural_model.tflite'))
         logger.info('Done.')
         self._model.allocate_tensors()
         self._input_idxs = {x['name']: x['index'] for x in self._model.get_input_details()}
@@ -363,4 +364,4 @@ class ProcessorSrlFramebank:
 
             result.append(sent_arg_roles)
 
-        return result
+        return {'srl': result}
